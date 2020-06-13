@@ -1,42 +1,40 @@
 package com.pc.ks;
 
-import android.graphics.drawable.Drawable;
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pc.ks.Adapter.MainTabFragmentPagerAdapter;
-import com.pc.ks.Adapter.SecondRecyclerViewAdapter;
-import com.pc.ks.Adapter.TimeLineAdapter;
-import com.pc.ks.Fragment.BlankFragment_me;
+import com.pc.ks.Fragment.BlankFragment_set;
 import com.pc.ks.Fragment.BlankFragment_time;
-import com.pc.ks.List.OrderStatus;
-import com.pc.ks.List.SecondRecyclerViewFragment;
-import com.pc.ks.Utils.LogUtils;
-import com.pc.ks.List.TimeLineModel;
+import com.pc.ks.Fragment.BlankFragment_todo;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity{
 
     private long exitTime = 0;
     private ViewPager mViewPager;
-    private RadioGroup mTabRadioGroup;
+    private MenuItem menuItem;
     private List<Fragment> mFragments;
     private FragmentPagerAdapter mAdapter;
+    private BottomNavigationView bottomNavigationView;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -50,33 +48,34 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private void initTabView() {
         // find view
         mViewPager = findViewById(R.id.main_fragment_vp);
-        mTabRadioGroup = findViewById(R.id.main_tabs);
-        //Icon size
-        RadioButton main_tab_time = findViewById(R.id.main_tab_time);
-        Drawable drawable_time = getResources().getDrawable(R.drawable.main_tab_selector_time);
-        drawable_time.setBounds(0, 0, 60, 60);
-        main_tab_time.setCompoundDrawables(null, drawable_time, null, null);
-        RadioButton main_tab_me = findViewById(R.id.main_tab_me);
-        Drawable drawable_me = getResources().getDrawable(R.drawable.main_tab_selector_me);
-        drawable_me.setBounds(0, 0, 60, 60);
-        main_tab_me.setCompoundDrawables(null, drawable_me, null, null);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.nav_view);
         // fragment
         mFragments = new ArrayList<>(2);
-        mFragments.add(BlankFragment_time.newInstance("学习","1"));
-        mFragments.add(BlankFragment_me.newInstance("我的","2"));
+        mFragments.add(BlankFragment_todo.newInstance("TODO","1"));
+        mFragments.add(BlankFragment_time.newInstance("TIME","2"));
+        mFragments.add(BlankFragment_set.newInstance("SET","3"));
         // Adapter
         mAdapter = new MainTabFragmentPagerAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(2);
         // Listener
         mViewPager.addOnPageChangeListener(mPageChangeListener);
-        mTabRadioGroup.setOnCheckedChangeListener(this);
-        main_tab_me.setOnClickListener(v->{
-            mViewPager.setCurrentItem(1);
-        });
-        main_tab_time.setOnClickListener(v->{
-            mViewPager.setCurrentItem(0);
-        });
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+            item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_todo:
+                        mViewPager.setCurrentItem(0);
+                        return true;
+                    case R.id.navigation_time:
+                        mViewPager.setCurrentItem(1);
+                        return true;
+                    case R.id.navigation_set:
+                        mViewPager.setCurrentItem(2);
+                        return true;
+                }
+                return false;
+            }
+        );
     }
 
     @Override //双击退出
@@ -102,9 +101,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         @Override
         public void onPageSelected(int position) {
-            RadioButton radioButton = (RadioButton) mTabRadioGroup.getChildAt(position);
-            radioButton.setChecked(true);
-            LogUtils.d("当前页数", String.valueOf(position));
+            if (menuItem != null) {
+                menuItem.setChecked(false);
+            } else {
+                bottomNavigationView.getMenu().getItem(0).setChecked(false);
+            }
+            menuItem = bottomNavigationView.getMenu().getItem(position);
+            menuItem.setChecked(true);
         }
 
         @Override
@@ -113,14 +116,4 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         }
     };
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        LogUtils.d("迪纳基勒"+checkedId);
-        for (int i = 0; i < group.getChildCount(); i++) {
-            if (group.getChildAt(i).getId() == checkedId) {
-                mViewPager.setCurrentItem(i);
-                return;
-            }
-        }
-    }
 }

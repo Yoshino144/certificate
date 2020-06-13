@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -12,45 +13,12 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <LinearLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:background="@color/main_dividing_line"
-            android:layout_width="match_parent"
-            android:layout_height="2px" />
-
-        <RadioGroup
-            android:id="@+id/main_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="@color/pure_white"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/main_tab_time"
-                android:checked="true"
-                android:gravity="center"
-                android:layout_gravity="center"
-                style="@style/Main_TabRadioButton"
-                android:textColor="@drawable/main_radiobutton_text_color"
-                android:drawableTop="@drawable/main_tab_selector_time"
-                android:text="学习"
-                android:textSize="10dp"/>
-
-            <RadioButton
-                android:id="@+id/main_tab_me"
-                android:gravity="center"
-                android:layout_gravity="center"
-                style="@style/Main_TabRadioButton"
-                android:textColor="@drawable/main_radiobutton_text_color"
-                android:drawableTop="@drawable/main_tab_selector_me"
-                android:text="我的"
-                android:textSize="10dp"/>
-        </RadioGroup>
-    </LinearLayout>
+        android:layout_height="45dp"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@drawable/bottom_color"
+        android:background="@color/pure_white"
+        app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>

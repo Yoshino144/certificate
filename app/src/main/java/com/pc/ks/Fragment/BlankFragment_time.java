@@ -1,39 +1,44 @@
 package com.pc.ks.Fragment;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.pc.ks.Adapter.TimeLineAdapter;
-import com.pc.ks.List.OrderStatus;
-import com.pc.ks.List.TimeLineModel;
-import com.pc.ks.MainActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.CalendarLayout;
+import com.haibin.calendarview.CalendarView;
 import com.pc.ks.R;
-import com.pc.ks.Utils.LogUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BlankFragment_time#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class BlankFragment_time extends Fragment {
+public class BlankFragment_time extends Fragment implements CalendarView.OnCalendarSelectListener, CalendarView.OnYearChangeListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private List<TimeLineModel> mDataList = new ArrayList();
-    private String mParam1;
-    private String mParam2;
+    TextView mTextMonthDay;
+    TextView mTextYear;
+    TextView mTextLunar;
+    TextView mTextCurrentDay;
+    CalendarView mCalendarView;
+    RelativeLayout mRelativeTool;
+    private int mYear;
+    CalendarLayout mCalendarLayout;
 
     public BlankFragment_time() {}
+
     public static BlankFragment_time newInstance(String param1, String param2) {
         BlankFragment_time fragment = new BlankFragment_time();
         Bundle args = new Bundle();
@@ -47,40 +52,114 @@ public class BlankFragment_time extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_blank_time, container, false);
-        initRecyclerView(view);
-        return view;
+        return inflater.inflate(R.layout.fragment_blank_time, container, false);
     }
 
-    private void initRecyclerView(View view){
-        initDates();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new
-                LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        TimeLineAdapter adapter = new TimeLineAdapter(mDataList, (MainActivity) getActivity());
-        recyclerView.setAdapter(adapter);
-        LogUtils.d("RecyclerView success");
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initView();
+        initData();
     }
 
-    private void initDates() {
-        mDataList.add(new TimeLineModel("Item successfully delivered", "", OrderStatus.INACTIVE));
-        mDataList.add(new TimeLineModel("Courier is out to delivery your order", "2017-02-12 08:00", OrderStatus.ACTIVE));
-        mDataList.add(new TimeLineModel("Item has reached courier facility at New Delhi", "2017-02-11 21:00", OrderStatus.COMPLETED));
-        mDataList.add(new TimeLineModel("Item has been given to the courier", "2017-02-11 18:00", OrderStatus.COMPLETED));
-        mDataList.add(new TimeLineModel("Item is packed and will dispatch soon", "2017-02-11 09:30", OrderStatus.COMPLETED));
-        mDataList.add(new TimeLineModel("Order is being readied for dispatch", "2017-02-11 08:00", OrderStatus.COMPLETED));
-        mDataList.add(new TimeLineModel("Order processing initiated", "2017-02-10 15:00", OrderStatus.COMPLETED));
-        mDataList.add(new TimeLineModel("Order confirmed by seller", "2017-02-10 14:30", OrderStatus.COMPLETED));
-        mDataList.add(new TimeLineModel("Order placed successfully", "2017-02-10 14:00", OrderStatus.COMPLETED));
+    @SuppressLint("SetTextI18n")
+    protected void initView() {
+        mTextMonthDay = getActivity().findViewById(R.id.tv_month_day);
+        mTextYear = getActivity().findViewById(R.id.tv_year);
+        mTextLunar = getActivity().findViewById(R.id.tv_lunar);
+        mRelativeTool = getActivity().findViewById(R.id.rl_tool);
+        mCalendarView = getActivity().findViewById(R.id.calendarView);
+        mTextCurrentDay = getActivity().findViewById(R.id.tv_current_day);
+        mTextMonthDay.setOnClickListener(v -> {
+            if (!mCalendarLayout.isExpand()) {
+                mCalendarLayout.expand();
+                return;
+            }
+            mCalendarView.showYearSelectLayout(mYear);
+            mTextLunar.setVisibility(View.GONE);
+            mTextYear.setVisibility(View.GONE);
+            mTextMonthDay.setText(String.valueOf(mYear));
+        });
+        getActivity().findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCalendarView.scrollToCurrent();
+            }
+        });
+        mCalendarLayout = getActivity().findViewById(R.id.calendarLayout);
+        mCalendarView.setOnCalendarSelectListener(this);
+        mCalendarView.setOnYearChangeListener(this);
+        mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
+        mYear = mCalendarView.getCurYear();
+        mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
+        mTextLunar.setText("今日");
+        mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
+    }
 
+    protected void initData() {
+        int year = mCalendarView.getCurYear();
+        int month = mCalendarView.getCurMonth();
+
+
+        Map<String, Calendar> map = new HashMap<>();
+        map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "20").toString(),
+                getSchemeCalendar(year, month, 3, 0xFF40db25, "20"));
+        map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "33").toString(),
+                getSchemeCalendar(year, month, 6, 0xFFe69138, "33"));
+        map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "25").toString(),
+                getSchemeCalendar(year, month, 9, 0xFFdf1356, "25"));
+        map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "50").toString(),
+                getSchemeCalendar(year, month, 13, 0xFFedc56d, "50"));
+        map.put(getSchemeCalendar(year, month, 14, 0xFFedc56d, "80").toString(),
+                getSchemeCalendar(year, month, 14, 0xFFedc56d, "80"));
+        map.put(getSchemeCalendar(year, month, 15, 0xFFaacc44, "20").toString(),
+                getSchemeCalendar(year, month, 15, 0xFFaacc44, "20"));
+        map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70").toString(),
+                getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70"));
+        map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "36").toString(),
+                getSchemeCalendar(year, month, 25, 0xFF13acf0, "36"));
+        map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "95").toString(),
+                getSchemeCalendar(year, month, 27, 0xFF13acf0, "95"));
+        //此方法在巨大的数据量上不影响遍历性能，推荐使用
+        mCalendarView.setSchemeDate(map);
+    }
+
+    private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
+        calendar.setScheme(text);
+        return calendar;
+    }
+
+    @Override
+    public void onCalendarOutOfRange(Calendar calendar) {
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
+        mTextLunar.setVisibility(View.VISIBLE);
+        mTextYear.setVisibility(View.VISIBLE);
+        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+        mTextYear.setText(String.valueOf(calendar.getYear()));
+        mTextLunar.setText(calendar.getLunar());
+        mYear = calendar.getYear();
+    }
+
+    @Override
+    public void onYearChange(int year) {
+        mTextMonthDay.setText(String.valueOf(year));
     }
 }

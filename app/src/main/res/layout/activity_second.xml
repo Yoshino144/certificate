@@ -54,7 +54,8 @@
             android:textSize="15sp"
             android:gravity="center"
             android:textColor="@color/pure_black"
-            android:background="@color/pure_white"
+            app:backgroundTint="@color/pure_white"
+            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 

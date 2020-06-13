@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_todo"
+        android:icon="@mipmap/todo"
+        android:title="TODO" />
+    <item
+        android:id="@+id/navigation_time"
+        android:icon="@mipmap/time"
+        android:title="TODO" />
+    <item
+        android:id="@+id/navigation_set"
+        android:icon="@mipmap/set"
+        android:title="TODO" />
+</menu>

@@ -51,11 +51,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TimeLineModel timeLineModel = mFeedList.get(position);
 
         if(timeLineModel.getStatus() == OrderStatus.INACTIVE){
-            holder.mTimelineView.setMarker(VectorDrawableCompat.create(mainActivity.getResources(),R.drawable.ic_marker_inactive, mainActivity.getTheme()),R.color.first_purple);
+            holder.mTimelineView.setMarker(VectorDrawableCompat.create(mainActivity.getResources(),R.drawable.ic_marker_inactive, mainActivity.getTheme()),R.color.colorGrey400);
         }else if(timeLineModel.getStatus() == OrderStatus.ACTIVE){
-            holder.mTimelineView.setMarker(VectorDrawableCompat.create(mainActivity.getResources(),R.drawable.ic_marker_active, mainActivity.getTheme()),R.color.first_purple);
+            holder.mTimelineView.setMarker(VectorDrawableCompat.create(mainActivity.getResources(),R.drawable.ic_marker_active, mainActivity.getTheme()),R.color.colorGrey400);
         }else{
-            holder.mTimelineView.setMarker(VectorDrawableCompat.create(mainActivity.getResources(),R.drawable.ic_marker, mainActivity.getTheme()),R.color.first_purple);
+            holder.mTimelineView.setMarker(VectorDrawableCompat.create(mainActivity.getResources(),R.drawable.ic_marker, mainActivity.getTheme()),R.color.colorGrey400);
         }
 
         if(!timeLineModel.getDate().isEmpty()) {

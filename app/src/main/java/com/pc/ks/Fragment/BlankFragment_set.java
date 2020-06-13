@@ -12,10 +12,10 @@ import com.pc.ks.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link BlankFragment_me#newInstance} factory method to
+ * Use the {@link BlankFragment_set#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment_me extends Fragment {
+public class BlankFragment_set extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class BlankFragment_me extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public BlankFragment_me() {
+    public BlankFragment_set() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class BlankFragment_me extends Fragment {
      * @return A new instance of fragment BlankFragment_me.
      */
     // TODO: Rename and change types and number of parameters
-    public static BlankFragment_me newInstance(String param1, String param2) {
-        BlankFragment_me fragment = new BlankFragment_me();
+    public static BlankFragment_set newInstance(String param1, String param2) {
+        BlankFragment_set fragment = new BlankFragment_set();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
