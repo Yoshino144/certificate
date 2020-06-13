@@ -12,16 +12,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.pc.ks.Adapter.MainTabFragmentPagerAdapter;
+import com.pc.ks.Adapter.SecondRecyclerViewAdapter;
+import com.pc.ks.Adapter.TimeLineAdapter;
 import com.pc.ks.Fragment.BlankFragment_me;
 import com.pc.ks.Fragment.BlankFragment_time;
+import com.pc.ks.List.OrderStatus;
+import com.pc.ks.List.SecondRecyclerViewFragment;
+import com.pc.ks.Utils.LogUtils;
+import com.pc.ks.List.TimeLineModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
     private long exitTime = 0;
     private ViewPager mViewPager;
@@ -61,7 +70,13 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setOffscreenPageLimit(2);
         // Listener
         mViewPager.addOnPageChangeListener(mPageChangeListener);
-        mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
+        mTabRadioGroup.setOnCheckedChangeListener(this);
+        main_tab_me.setOnClickListener(v->{
+            mViewPager.setCurrentItem(1);
+        });
+        main_tab_time.setOnClickListener(v->{
+            mViewPager.setCurrentItem(0);
+        });
     }
 
     @Override //双击退出
@@ -89,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             RadioButton radioButton = (RadioButton) mTabRadioGroup.getChildAt(position);
             radioButton.setChecked(true);
-            Log.d("当前页数", String.valueOf(position));
+            LogUtils.d("当前页数", String.valueOf(position));
         }
 
         @Override
@@ -98,16 +113,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private RadioGroup.OnCheckedChangeListener mOnCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            for (int i = 0; i < group.getChildCount(); i++) {
-                if (group.getChildAt(i).getId() == checkedId) {
-                    mViewPager.setCurrentItem(i);
-                    return;
-                }
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        LogUtils.d("迪纳基勒"+checkedId);
+        for (int i = 0; i < group.getChildCount(); i++) {
+            if (group.getChildAt(i).getId() == checkedId) {
+                mViewPager.setCurrentItem(i);
+                return;
             }
         }
-    };
-
+    }
 }

@@ -9,14 +9,17 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.StartActivity"
             android:launchMode="singleTask"
-            android:theme="@style/MainActivityTheme">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.FirstActivity"/>
+        <activity android:name=".Activity.SecondActivity"/>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>

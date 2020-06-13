@@ -3,12 +3,22 @@ package com.pc.ks.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pc.ks.Adapter.TimeLineAdapter;
+import com.pc.ks.List.OrderStatus;
+import com.pc.ks.List.TimeLineModel;
+import com.pc.ks.MainActivity;
 import com.pc.ks.R;
+import com.pc.ks.Utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,28 +27,13 @@ import com.pc.ks.R;
  */
 public class BlankFragment_time extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    private List<TimeLineModel> mDataList = new ArrayList();
     private String mParam1;
     private String mParam2;
 
-    public BlankFragment_time() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment_time.
-     */
-    // TODO: Rename and change types and number of parameters
+    public BlankFragment_time() {}
     public static BlankFragment_time newInstance(String param1, String param2) {
         BlankFragment_time fragment = new BlankFragment_time();
         Bundle args = new Bundle();
@@ -60,7 +55,32 @@ public class BlankFragment_time extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank_time, container, false);
+        View view = inflater.inflate(R.layout.fragment_blank_time, container, false);
+        initRecyclerView(view);
+        return view;
+    }
+
+    private void initRecyclerView(View view){
+        initDates();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new
+                LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        TimeLineAdapter adapter = new TimeLineAdapter(mDataList, (MainActivity) getActivity());
+        recyclerView.setAdapter(adapter);
+        LogUtils.d("RecyclerView success");
+    }
+
+    private void initDates() {
+        mDataList.add(new TimeLineModel("Item successfully delivered", "", OrderStatus.INACTIVE));
+        mDataList.add(new TimeLineModel("Courier is out to delivery your order", "2017-02-12 08:00", OrderStatus.ACTIVE));
+        mDataList.add(new TimeLineModel("Item has reached courier facility at New Delhi", "2017-02-11 21:00", OrderStatus.COMPLETED));
+        mDataList.add(new TimeLineModel("Item has been given to the courier", "2017-02-11 18:00", OrderStatus.COMPLETED));
+        mDataList.add(new TimeLineModel("Item is packed and will dispatch soon", "2017-02-11 09:30", OrderStatus.COMPLETED));
+        mDataList.add(new TimeLineModel("Order is being readied for dispatch", "2017-02-11 08:00", OrderStatus.COMPLETED));
+        mDataList.add(new TimeLineModel("Order processing initiated", "2017-02-10 15:00", OrderStatus.COMPLETED));
+        mDataList.add(new TimeLineModel("Order confirmed by seller", "2017-02-10 14:30", OrderStatus.COMPLETED));
+        mDataList.add(new TimeLineModel("Order placed successfully", "2017-02-10 14:00", OrderStatus.COMPLETED));
+
     }
 }

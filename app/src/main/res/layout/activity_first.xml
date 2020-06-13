@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/pure_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="250dp"
+        android:text="欢迎使用 今夕何夕"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textColor="@color/pure_black"
+        android:layout_height="80dp"/>
+
+    <TextView
+        android:textSize="15sp"
+        android:layout_marginLeft="50dp"
+        android:gravity="center"
+        android:layout_marginRight="50dp"
+        android:layout_width="match_parent"
+        android:text="我们将贴心的展现你需要的内容，按照你的规划，达成目标"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/first_button_new_friend"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="我是新手"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/pure_white"
+        android:background="@drawable/radius_first_new_friend"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <Button
+        android:id="@+id/first_button_old_friend"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="我已有账号"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textColor="@color/first_purple"
+        android:background="@drawable/radius_first_old_friend"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+</LinearLayout>
