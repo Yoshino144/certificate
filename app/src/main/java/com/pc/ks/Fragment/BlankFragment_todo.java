@@ -2,6 +2,7 @@ package com.pc.ks.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,7 @@ public class BlankFragment_todo extends Fragment {
     TextView mTextYear;
     TextView mTextLunar;
     CalendarView mCalendarView;
+    private MainActivity ma;
 
     public BlankFragment_todo() {}
     public static BlankFragment_todo newInstance(String param1, String param2) {
@@ -95,6 +97,18 @@ public class BlankFragment_todo extends Fragment {
         TimeLineAdapter adapter = new TimeLineAdapter(mDataList, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         LogUtils.d("RecyclerView success");
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy>5){
+                    ((MainActivity) getActivity()).Hide();
+                }
+                if (dy<-5){
+                    ((MainActivity) getActivity()).Display();
+                }
+            }
+        });
     }
 
     private void initDates() {
@@ -109,4 +123,5 @@ public class BlankFragment_todo extends Fragment {
         mDataList.add(new TimeLineModel("Order placed successfully", "2017-02-10 14:00", OrderStatus.COMPLETED));
 
     }
+
 }

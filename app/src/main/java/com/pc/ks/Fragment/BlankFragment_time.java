@@ -110,24 +110,24 @@ public class BlankFragment_time extends Fragment implements CalendarView.OnCalen
 
 
         Map<String, Calendar> map = new HashMap<>();
-        map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "20").toString(),
-                getSchemeCalendar(year, month, 3, 0xFF40db25, "20"));
-        map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "33").toString(),
-                getSchemeCalendar(year, month, 6, 0xFFe69138, "33"));
-        map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "25").toString(),
-                getSchemeCalendar(year, month, 9, 0xFFdf1356, "25"));
-        map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "50").toString(),
-                getSchemeCalendar(year, month, 13, 0xFFedc56d, "50"));
-        map.put(getSchemeCalendar(year, month, 14, 0xFFedc56d, "80").toString(),
-                getSchemeCalendar(year, month, 14, 0xFFedc56d, "80"));
-        map.put(getSchemeCalendar(year, month, 15, 0xFFaacc44, "20").toString(),
-                getSchemeCalendar(year, month, 15, 0xFFaacc44, "20"));
-        map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70").toString(),
-                getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70"));
-        map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "36").toString(),
-                getSchemeCalendar(year, month, 25, 0xFF13acf0, "36"));
-        map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "95").toString(),
-                getSchemeCalendar(year, month, 27, 0xFF13acf0, "95"));
+        map.put(getSchemeCalendar(year, month, 3, 0xFF7abd9a, "20").toString(),
+                getSchemeCalendar(year, month, 3, 0xFF7abd9a, "20"));
+        map.put(getSchemeCalendar(year, month, 6, 0xFF7abd9a, "33").toString(),
+                getSchemeCalendar(year, month, 6, 0xFF7abd9a, "33"));
+        map.put(getSchemeCalendar(year, month, 9, 0xFF7abd9a, "25").toString(),
+                getSchemeCalendar(year, month, 9, 0xFF7abd9a, "25"));
+        map.put(getSchemeCalendar(year, month, 13, 0xFF7abd9a, "50").toString(),
+                getSchemeCalendar(year, month, 13, 0xFF7abd9a, "50"));
+        map.put(getSchemeCalendar(year, month, 14, 0xFF7abd9a, "80").toString(),
+                getSchemeCalendar(year, month, 14, 0xFF7abd9a, "80"));
+        map.put(getSchemeCalendar(year, month, 15, 0xFF7abd9a, "20").toString(),
+                getSchemeCalendar(year, month, 15, 0xFF7abd9a, "20"));
+        map.put(getSchemeCalendar(year, month, 18, 0xFF7abd9a, "70").toString(),
+                getSchemeCalendar(year, month, 18, 0xFF7abd9a, "70"));
+        map.put(getSchemeCalendar(year, month, 25, 0xFF7abd9a, "36").toString(),
+                getSchemeCalendar(year, month, 25, 0xFF7abd9a, "36"));
+        map.put(getSchemeCalendar(year, month, 27, 0xFF7abd9a, "95").toString(),
+                getSchemeCalendar(year, month, 27, 0xFF7abd9a, "95"));
         //此方法在巨大的数据量上不影响遍历性能，推荐使用
         mCalendarView.setSchemeDate(map);
     }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">今夕何夕</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

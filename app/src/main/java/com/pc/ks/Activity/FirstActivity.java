@@ -23,6 +23,7 @@ public class FirstActivity extends AppCompatActivity {
         new_friend.setOnClickListener(v->{
             Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
             startActivity(intent);
+            finish();
         });
         old_friend.setOnClickListener(v->{
             LogUtils.d("old_friend");

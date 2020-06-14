@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/pure_white"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
 
@@ -15,8 +16,8 @@
         app:markerSize="15dp"
         app:lineWidth="2dp"
         app:linePadding="5dp"
-        app:startLineColor="@color/first_purple"
-        app:endLineColor="@color/first_purple"
+        app:startLineColor="@color/pc_green_one"
+        app:endLineColor="@color/pc_green_one"
         app:lineStyle="normal"/>
 
     <com.google.android.material.card.MaterialCardView

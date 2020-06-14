@@ -39,10 +39,6 @@ public class StartActivity extends AppCompatActivity {
                         SharedPreferences sp = getSharedPreferences("first_open", 0);
                         int count = sp.getInt("start_count", 0);
                         if(count == 0){
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putInt("start_count", ++count);
-                            //提交修改
-                            editor.apply();
                             //新用户页面
                             Intent intent = new Intent(StartActivity.this, FirstActivity.class);
                             startActivity(intent);

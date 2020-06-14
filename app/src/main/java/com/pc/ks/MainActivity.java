@@ -21,6 +21,7 @@ import com.pc.ks.Adapter.MainTabFragmentPagerAdapter;
 import com.pc.ks.Fragment.BlankFragment_set;
 import com.pc.ks.Fragment.BlankFragment_time;
 import com.pc.ks.Fragment.BlankFragment_todo;
+import com.pc.ks.Utils.LogUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -101,6 +102,10 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void onPageSelected(int position) {
+            LogUtils.d("当前主页数"+position);
+            if(position !=2){
+//                bottomNavigationView.animate().translationY(0);
+            }
             if (menuItem != null) {
                 menuItem.setChecked(false);
             } else {
@@ -108,6 +113,9 @@ public class MainActivity extends AppCompatActivity{
             }
             menuItem = bottomNavigationView.getMenu().getItem(position);
             menuItem.setChecked(true);
+            if(position == 2){
+//                bottomNavigationView.animate().translationY(bottomNavigationView.getHeight());
+            }
         }
 
         @Override
@@ -115,5 +123,15 @@ public class MainActivity extends AppCompatActivity{
 
         }
     };
+
+    public void Hide(){
+        LogUtils.d("隐藏了导航栏");
+        bottomNavigationView.animate().translationY(bottomNavigationView.getHeight());
+    }
+
+    public void Display(){
+        LogUtils.d("显示了导航栏");
+        bottomNavigationView.animate().translationY(0);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.pc.ks.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -23,16 +24,26 @@ public class SecondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        //修改为 非首次运行
+        SharedPreferences sp = getSharedPreferences("first_open", 0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("start_count", 2);
         initRecyclerView();
         Button submit = findViewById(R.id.second_submit);
         Button skip = findViewById(R.id.second_skip);
         submit.setOnClickListener(v->{
             Intent intent = new Intent(SecondActivity.this, MainActivity.class);
             startActivity(intent);
+            //提交修改
+            editor.apply();
+            finish();
         });
         skip.setOnClickListener(v->{
             Intent intent = new Intent(SecondActivity.this, MainActivity.class);
             startActivity(intent);
+            //提交修改
+            editor.apply();
+            finish();
         });
     }
 

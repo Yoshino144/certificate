@@ -8,6 +8,7 @@
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
+        android:background="@color/pure_white"
         android:layout_height="66px"/>
     <RelativeLayout
         android:id="@+id/todo_tool"
@@ -61,10 +62,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@color/pure_white"
         android:clipToPadding="false"
         android:padding="12dp"
         tools:listitem="@layout/item_timeline" />
+
 
 </LinearLayout>
