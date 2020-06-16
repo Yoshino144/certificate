@@ -8,6 +8,7 @@ import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private SpinKitView spinKitView;
     private LinearLayout login;
     private TickView tickView;
+    private TextView forget;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         tickView = findViewById(R.id.tickView);
         login = findViewById(R.id.login);
         spinKitView = findViewById(R.id.spin_kit);
+        forget = findViewById(R.id.forget);
+        forget.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        forget.getPaint().setAntiAlias(true);//抗锯齿
         login.setOnClickListener(v->{
             showBottomLayout();
             login_text.setVisibility(View.GONE);
@@ -50,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
             new Thread(() -> {
                 try {
-                    Thread.sleep(1500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
