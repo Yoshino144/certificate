@@ -13,6 +13,8 @@
     <color name="pc_green_two">#7abd9a</color>
     <color name="pc_green_one">#50c7a2</color>
     <color name="pc_shan">#fe6f61</color>
+    <color name="pc_blue">#6698cb</color>
+    <color name="pc_cyan">#7fccde</color>
 
     <!--灰色-->
     <color name="colorGrey200">#f4f6f7</color>

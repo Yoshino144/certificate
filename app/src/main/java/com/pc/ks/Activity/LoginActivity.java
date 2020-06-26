@@ -1,103 +1,109 @@
 package com.pc.ks.Activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Paint;
+import android.animation.ArgbEvaluator;
+import android.content.Context;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.LayoutAnimationController;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.view.animation.AccelerateInterpolator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import com.github.ybq.android.spinkit.SpinKitView;
-import com.pc.ks.MainActivity;
+import com.pc.ks.Fragment.FragmentForget;
+import com.pc.ks.Fragment.FragmentLogin;
+import com.pc.ks.Fragment.FragmentSign;
 import com.pc.ks.R;
-import com.pc.ks.Utils.CompatUtils;
-import com.pc.ks.View.TickView;
+import com.pc.ks.Utils.FixedSpeedScroller;
+import com.pc.ks.Utils.NoScrollViewPager;
 
-public class LoginActivity extends AppCompatActivity {
-    private TextView login_text;
-    private SpinKitView spinKitView;
-    private LinearLayout login;
-    private TickView tickView;
-    private TextView forget;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LoginActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+    private NoScrollViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();
+        List<Fragment> list = new ArrayList<>();
+        list.add(new FragmentForget());
+        list.add(new FragmentLogin());
+        list.add(new FragmentSign());
+        viewPager = findViewById(R.id.login_vp);
+        MyAdapter adapter = new MyAdapter(getSupportFragmentManager(), list);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setScrollable(false);
+        viewPager.setCurrentItem(1);
+        controlViewPagerSpeed(this,viewPager);
     }
 
-    private void initView() {
-        login_text = findViewById(R.id.login_text);
-        tickView = findViewById(R.id.tickView);
-        login = findViewById(R.id.login);
-        spinKitView = findViewById(R.id.spin_kit);
-        forget = findViewById(R.id.forget);
-        forget.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        forget.getPaint().setAntiAlias(true);//抗锯齿
-        login.setOnClickListener(v->{
-            showBottomLayout();
-            login_text.setVisibility(View.GONE);
-            spinKitView.setVisibility(View.VISIBLE);
-
-            new Thread(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(() -> {
-                    spinKitView.setVisibility(View.GONE);
-                    tickView.setVisibility(View.VISIBLE);
-                    tickView.start();
-                });
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(() -> {
-                    tickView.stop();
-                });
-            }).start();
-
-        });
+    public void setViewPager(int page){
+        viewPager.setCurrentItem(page);
     }
 
-    private void showBottomLayout() {
-        TypeEvaluator<ViewGroup.LayoutParams> evaluator = new HeightEvaluator();
-
-        ViewGroup.LayoutParams start = new ViewGroup.LayoutParams(CompatUtils.dp2px(this,200), CompatUtils.dp2px(this,50));
-        ViewGroup.LayoutParams end = new ViewGroup.LayoutParams(CompatUtils.dp2px(this,50), CompatUtils.dp2px(this,50));
-        ValueAnimator animator = ObjectAnimator.ofObject(login, "layoutParams", evaluator, start, end);
-
-        AnimatorSet set = new AnimatorSet();
-        set.play(animator);
-        set.setDuration(400);
-        set.start();
+    private void controlViewPagerSpeed(Context context, ViewPager viewpager) {
+        try {
+            Field mField;
+            mField = ViewPager.class.getDeclaredField("mScroller");
+            mField.setAccessible(true);
+            FixedSpeedScroller mScroller =
+                    new FixedSpeedScroller(context, new AccelerateInterpolator());
+            mScroller.setmDuration(400);
+            mField.set(viewpager, mScroller);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    class HeightEvaluator implements TypeEvaluator<ViewGroup.LayoutParams> {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        ArgbEvaluator evaluator = new ArgbEvaluator(); // ARGB求值器
+        int evaluate = 0x00FFFFFF; // 初始默认颜色（透明白）
+        if(position == 0){
+            evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF6698cb, 0XFF50c7a2); // 根据positionOffset和第0页~第1页的颜色转换范围取颜色值
+        }else if (position == 1) {
+            evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF50c7a2, 0XFF7fccde); // 根据positionOffset和第0页~第1页的颜色转换范围取颜色值
+        }else if(position == 2){
+            evaluate = (Integer) evaluator.evaluate(positionOffset, 0XFF7fccde, 0XFF50c7a2); // 根据positionOffset和第1页~第2页的颜色转换范围取颜色值
+        }
+        ((View)viewPager.getParent()).setBackgroundColor(evaluate); // 为ViewPager的父容器设置背景色
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public static class MyAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> mfragmentList;
+
+        public MyAdapter(FragmentManager fm, List<Fragment>fragmentList) {
+            super(fm);
+            this.mfragmentList=fragmentList;
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return mfragmentList.get(position);
+        }
 
         @Override
-        public ViewGroup.LayoutParams evaluate(float fraction, ViewGroup.LayoutParams startValue, ViewGroup.LayoutParams endValue) {
-            ViewGroup.LayoutParams params = login.getLayoutParams();
-            params.width = (int) (startValue.width + fraction * (endValue.width - startValue.width));
-            return params;
+        public int getCount() {
+            return mfragmentList.size();
         }
     }
 }
