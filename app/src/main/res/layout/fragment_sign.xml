@@ -20,7 +20,7 @@
             android:src="@mipmap/back_while_one" />
 
         <TextView
-            android:text="Login"
+            android:text="手机号注册"
             android:textSize="18sp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
@@ -35,7 +35,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="195dp"
         app:cardCornerRadius="7dp"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
@@ -62,9 +62,9 @@
 
                 <EditText
                     android:textSize="15sp"
-                    android:id="@+id/username"
+                    android:id="@+id/username_sign"
                     android:background="@null"
-                    android:hint="电话号"
+                    android:hint="用户名"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
@@ -91,9 +91,38 @@
 
                 <EditText
                     android:textSize="15sp"
-                    android:id="@+id/password"
+                    android:id="@+id/password_sign"
                     android:background="@null"
-                    android:hint="验证码"
+                    android:hint="密码"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/colorGrey200"
+                android:layout_height="1dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/password"/>
+
+                <EditText
+                    android:textSize="15sp"
+                    android:id="@+id/password_sign_two"
+                    android:background="@null"
+                    android:hint="确认密码"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
@@ -111,7 +140,7 @@
         android:layout_height="50dp">
 
         <LinearLayout
-            android:id="@+id/login"
+            android:id="@+id/sign"
             android:gravity="center"
             android:padding="1dp"
             android:background="@drawable/login_button"
@@ -127,7 +156,7 @@
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip"
                 android:paddingTop="2dip"
-                android:text="Login"
+                android:text="注册"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 

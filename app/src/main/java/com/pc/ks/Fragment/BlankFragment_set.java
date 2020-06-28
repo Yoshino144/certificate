@@ -1,6 +1,8 @@
 package com.pc.ks.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.pc.ks.Activity.LoginActivity;
+import com.pc.ks.Activity.SetActivity;
 import com.pc.ks.R;
 import com.pc.ks.Utils.LogUtils;
 import com.pc.ks.View.GifSizeFilter;
@@ -25,9 +29,13 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -45,6 +53,10 @@ public class BlankFragment_set extends Fragment {
     private String mParam2;
     private static final int REQUEST_CODE_CHOOSE = 23;
     private UriAdapter mAdapter;
+    private String username="用户名";
+    private boolean isLogin=false;
+    private TextView user_name_view;
+    private MaterialRippleLayout setButton;
 
     public BlankFragment_set() {}
     public static BlankFragment_set newInstance(String param1, String param2) {
@@ -75,27 +87,64 @@ public class BlankFragment_set extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getData();
+        initView();
+        initChooseImage();
+    }
+
+    private void getData(){
+        SharedPreferences sp = getActivity().getSharedPreferences("user", 0);
+        if(sp.getBoolean("isLogin",false)){
+            isLogin = true;
+            username = sp.getString("username","用户名");
+            LogUtils.d("已登陆,用户名:"+username);
+        }else{
+            isLogin = false;
+            username = "用户名";
+        }
+    }
+
+    private void initView(){
+        setButton = getActivity().findViewById(R.id.ripple_set_one);
+        setButton.setOnClickListener(v->{
+            Intent intent = new Intent(getActivity(), SetActivity.class);
+            startActivity(intent);
+        });
+        user_name_view = getActivity().findViewById(R.id.user_name);
+        user_name_view.setText(username);
         RelativeLayout login = getActivity().findViewById(R.id.login);
+        login.setOnClickListener(v->{
+            if(isLogin){
+
+            }else{
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+    }
+    private void initChooseImage(){
         circleImageView = getActivity().findViewById(R.id.profile_image);
         circleImageView.setOnClickListener(v->{
-            Matisse.from(getActivity())
-                    .choose(MimeType.ofAll(), false) //参数1 显示资源类型 参数2 是否可以同时选择不同的资源类型 true表示不可以 false表示可以
+            if(!isLogin){
+                Toasty.info(getActivity(), "你还未登录").show();
+            }else{
+                Matisse.from(getActivity())
+                        .choose(MimeType.ofAll(), false) //参数1 显示资源类型 参数2 是否可以同时选择不同的资源类型 true表示不可以 false表示可以
 //            .theme(R.style.Matisse_Dracula) //选择主题 默认是蓝色主题，Matisse_Dracula为黑色主题
-                    .countable(true) //是否显示数字
-                    .capture(true)  //是否可以拍照
-                    .captureStrategy(//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
-                            new CaptureStrategy(true, "com.pc.ks.provider"))
-                    .maxSelectable(9)  //最大选择资源数量
-                    .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K)) //添加自定义过滤器
-                    .gridExpectedSize( getResources().getDimensionPixelSize(R.dimen.grid_expected_size)) //设置列宽
-                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) //设置屏幕方向
-                    .thumbnailScale(0.85f)  //图片缩放比例
-                    .imageEngine(new GlideEngine())  //选择图片加载引擎
-                    .forResult(REQUEST_CODE_CHOOSE);  //设置requestcode,开启Matisse主页面
-        });
-        login.setOnClickListener(v->{
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            startActivity(intent);
+                        .countable(true) //是否显示数字
+                        .capture(true)  //是否可以拍照
+                        .captureStrategy(//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                                new CaptureStrategy(true, "com.pc.ks.provider"))
+                        .maxSelectable(9)  //最大选择资源数量
+                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K)) //添加自定义过滤器
+                        .gridExpectedSize( getResources().getDimensionPixelSize(R.dimen.grid_expected_size)) //设置列宽
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) //设置屏幕方向
+                        .thumbnailScale(0.85f)  //图片缩放比例
+                        .imageEngine(new GlideEngine())  //选择图片加载引擎
+                        .forResult(REQUEST_CODE_CHOOSE);  //设置requestcode,开启Matisse主页面
+            }
+
         });
     }
 
@@ -150,5 +199,18 @@ public class BlankFragment_set extends Fragment {
                 mPath = (TextView) contentView.findViewById(R.id.path);
             }
         }
+    }
+
+    private boolean isFirstLoading = true;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!isFirstLoading) {
+            getData();
+            user_name_view.setText(username);
+        }
+
+        isFirstLoading = false;
     }
 }

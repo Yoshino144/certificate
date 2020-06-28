@@ -26,7 +26,9 @@ public class FirstActivity extends AppCompatActivity {
             finish();
         });
         old_friend.setOnClickListener(v->{
-            LogUtils.d("old_friend");
+            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
 
     }

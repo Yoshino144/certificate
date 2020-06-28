@@ -88,12 +88,7 @@ public class BlankFragment_time extends Fragment implements CalendarView.OnCalen
             mTextYear.setVisibility(View.GONE);
             mTextMonthDay.setText(String.valueOf(mYear));
         });
-        getActivity().findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCalendarView.scrollToCurrent();
-            }
-        });
+        getActivity().findViewById(R.id.fl_current).setOnClickListener(v -> mCalendarView.scrollToCurrent());
         mCalendarLayout = getActivity().findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);

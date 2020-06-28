@@ -7,6 +7,7 @@
     android:background="#ffffff"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    tools:context="com.pc.ks.MainActivity"
     tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
     <TextView
@@ -77,8 +78,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@mipmap/ic_calendar"
-                android:tint="#000000" />
+                android:src="@mipmap/ic_calendar_black" />
 
             <TextView
                 android:id="@+id/tv_current_day"
@@ -130,6 +130,12 @@
             app:year_view_month_text_color="@color/pc_green_two"
             app:year_view_month_text_size="20sp"
             app:year_view_scheme_color="@color/pc_green_two" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/pure_white" />
     </com.haibin.calendarview.CalendarLayout>
 
 </LinearLayout>

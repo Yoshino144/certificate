@@ -1,6 +1,7 @@
 package com.pc.ks;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,6 +29,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class MainActivity extends AppCompatActivity{
 
     private long exitTime = 0;
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
     private List<Fragment> mFragments;
     private FragmentPagerAdapter mAdapter;
     private BottomNavigationView bottomNavigationView;
-
+    private int page;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -44,6 +47,15 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initTabView();  //注册底部菜单
+
+        Intent intent =getIntent();
+        page=intent.getIntExtra("page",0);
+        setViewPager(page);
+
+    }
+
+    public void setViewPager(int page){
+        mViewPager.setCurrentItem(page);
     }
 
     private void initTabView() {
@@ -103,8 +115,8 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void onPageSelected(int position) {
             LogUtils.d("当前主页数"+position);
-            if(position !=2){
-//                bottomNavigationView.animate().translationY(0);
+            if (position!=0){
+                Display();
             }
             if (menuItem != null) {
                 menuItem.setChecked(false);
@@ -113,9 +125,6 @@ public class MainActivity extends AppCompatActivity{
             }
             menuItem = bottomNavigationView.getMenu().getItem(position);
             menuItem.setChecked(true);
-            if(position == 2){
-//                bottomNavigationView.animate().translationY(bottomNavigationView.getHeight());
-            }
         }
 
         @Override

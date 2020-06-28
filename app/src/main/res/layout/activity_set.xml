@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:background="@color/pure_white"
+        android:layout_height="66px"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="7dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:elevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/out_login"
+                app:mrl_rippleOverlay="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleColor="@color/pc_green_two"
+                app:mrl_rippleBackground="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/set_set_black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="退出登录"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/pure_black"
+                        android:layout_marginLeft="20dp"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple_set_two"
+                app:mrl_rippleOverlay="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleColor="@color/pc_green_two"
+                app:mrl_rippleBackground="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/set_night_black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="夜间"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/pure_black"
+                        android:layout_marginLeft="20dp"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

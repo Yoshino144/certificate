@@ -2,9 +2,12 @@ package com.pc.ks.Activity;
 
 import android.animation.ArgbEvaluator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.pc.ks.Fragment.FragmentForget;
 import com.pc.ks.Fragment.FragmentLogin;
 import com.pc.ks.Fragment.FragmentSign;
+import com.pc.ks.MainActivity;
 import com.pc.ks.R;
 import com.pc.ks.Utils.FixedSpeedScroller;
 import com.pc.ks.Utils.NoScrollViewPager;
@@ -23,6 +27,8 @@ import com.pc.ks.Utils.NoScrollViewPager;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private NoScrollViewPager viewPager;
@@ -44,6 +50,27 @@ public class LoginActivity extends AppCompatActivity implements ViewPager.OnPage
         controlViewPagerSpeed(this,viewPager);
     }
 
+    @Override //双击退出
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            goTOMainActivity();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void successLogin(){
+        Toasty.success(this, "登录成功!", Toast.LENGTH_SHORT, true).show();
+        goTOMainActivity();
+    }
+
+    public void goTOMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("page", 2);
+        startActivity(intent);
+        finish();
+    }
+
     public void setViewPager(int page){
         viewPager.setCurrentItem(page);
     }
@@ -55,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements ViewPager.OnPage
             mField.setAccessible(true);
             FixedSpeedScroller mScroller =
                     new FixedSpeedScroller(context, new AccelerateInterpolator());
-            mScroller.setmDuration(400);
+            mScroller.setmDuration(300);
             mField.set(viewpager, mScroller);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,30 +104,21 @@ public class LoginActivity extends AppCompatActivity implements ViewPager.OnPage
     }
 
     @Override
-    public void onPageSelected(int position) {
-
-    }
+    public void onPageSelected(int position) {}
 
     @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
+    public void onPageScrollStateChanged(int state) {}
 
     public static class MyAdapter extends FragmentPagerAdapter {
-
         private List<Fragment> mfragmentList;
-
         public MyAdapter(FragmentManager fm, List<Fragment>fragmentList) {
-            super(fm);
-            this.mfragmentList=fragmentList;
+            super(fm); this.mfragmentList=fragmentList;
         }
-
         @NonNull
         @Override
         public Fragment getItem(int position) {
             return mfragmentList.get(position);
         }
-
         @Override
         public int getCount() {
             return mfragmentList.size();

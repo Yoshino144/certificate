@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/sign_up"
-            android:text="Sign Up"
+            android:text="注册"
             android:textSize="18sp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
@@ -65,7 +65,7 @@
                     android:textSize="15sp"
                     android:id="@+id/username"
                     android:background="@null"
-                    android:hint="UserName"
+                    android:hint="用户名/电话号"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
@@ -83,6 +83,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/card_ph_pw"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -94,10 +95,17 @@
                     android:textSize="15sp"
                     android:id="@+id/password"
                     android:background="@null"
-                    android:hint="PassWord"
+                    android:hint="密码"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/send"
+                    android:visibility="gone"
+                    android:layout_width="90dp"
+                    android:text="发送验证码"
+                    android:layout_height="20dp"/>
 
             </LinearLayout>
 
@@ -110,6 +118,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="50dp">
+
 
         <LinearLayout
             android:id="@+id/login"
@@ -152,19 +161,70 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="200dp"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/pw_ph"
+            android:gravity="center"
+            android:padding="1dp"
+            android:background="@drawable/login_button"
+            android:layout_width="50dp"
+            android:layout_marginRight="40dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/pw_ph_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/ph_write"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/qq"
+            android:gravity="center"
+            android:padding="1dp"
+            android:background="@drawable/login_button"
+            android:layout_width="50dp"
+            android:layout_marginRight="40dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/qq"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/forget"
-            android:text="Forget Password"
-            android:textSize="18sp"
-            android:autoLink="all"
-            android:textColor="@color/pure_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:gravity="center"
+            android:padding="1dp"
+            android:background="@drawable/login_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/forget"/>
+
+        </LinearLayout>
+
+<!--        <TextView-->
+<!--            android:id="@+id/forget"-->
+<!--            android:text="忘记密码"-->
+<!--            android:textSize="18sp"-->
+<!--            android:autoLink="all"-->
+<!--            android:textColor="@color/pure_white"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
 
     </LinearLayout>
 
