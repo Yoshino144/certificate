@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.jerey.animationlib.AnimationHelper;
 import com.pc.ks.Activity.LoginActivity;
 import com.pc.ks.Activity.SetActivity;
 import com.pc.ks.R;
@@ -107,8 +108,11 @@ public class BlankFragment_set extends Fragment {
     private void initView(){
         setButton = getActivity().findViewById(R.id.ripple_set_one);
         setButton.setOnClickListener(v->{
-            Intent intent = new Intent(getActivity(), SetActivity.class);
-            startActivity(intent);
+            AnimationHelper.startActivity(getActivity(),
+                    new Intent(getActivity(), SetActivity.class),
+                    setButton,
+                    R.color.pc_green_three
+            );
         });
         user_name_view = getActivity().findViewById(R.id.user_name);
         user_name_view.setText(username);

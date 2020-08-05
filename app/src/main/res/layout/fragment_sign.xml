@@ -20,6 +20,7 @@
             android:src="@mipmap/back_while_one" />
 
         <TextView
+            android:id="@+id/phone_pw"
             android:text="手机号注册"
             android:textSize="18sp"
             android:layout_alignParentRight="true"
@@ -111,6 +112,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/card_ph_pw_sign"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -126,6 +128,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/send_sign"
+                    android:visibility="gone"
+                    android:layout_width="90dp"
+                    android:text="发送验证码"
+                    android:layout_height="20dp"/>
 
             </LinearLayout>
 
@@ -148,7 +157,7 @@
             android:layout_height="50dp">
 
             <TextView
-                android:id="@+id/login_text"
+                android:id="@+id/sign_text"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:gravity="center"
@@ -161,7 +170,7 @@
                 android:textSize="20sp" />
 
             <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/spin_kit"
+                android:id="@+id/spin_kit_sign"
                 android:visibility="gone"
                 style="@style/SpinKitView.Large.DoubleBounce"
                 android:layout_width="35dp"

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pc.ks.Adapter.TimeLineAdapter;
 import com.pc.ks.List.OrderStatus;
@@ -19,10 +20,17 @@ import com.pc.ks.List.TimeLineModel;
 import com.pc.ks.MainActivity;
 import com.pc.ks.R;
 import com.pc.ks.Utils.LogUtils;
+import com.pc.ks.View.CirclereFreshLayout.CircleRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
+
+import es.dmoral.toasty.Toasty;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class BlankFragment_todo extends Fragment {
@@ -35,24 +43,18 @@ public class BlankFragment_todo extends Fragment {
     TextView mTextLunar;
     CalendarView mCalendarView;
     private MainActivity ma;
+    private CircleRefreshLayout circleRefreshLayout;
 
-    public BlankFragment_todo() {}
+    public BlankFragment_todo() {
+    }
+
     public static BlankFragment_todo newInstance(String param1, String param2) {
-        BlankFragment_todo fragment = new BlankFragment_todo();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new BlankFragment_todo();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -64,12 +66,46 @@ public class BlankFragment_todo extends Fragment {
         return view;
     }
 
-    private void initTabTime(View view){
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        circleRefreshLayout = getActivity().findViewById(R.id.refresh_layout);
+        circleRefreshLayout.setOnRefreshListener(
+                new CircleRefreshLayout.OnCircleRefreshListener() {
+                    @Override
+                    public void refreshing() {
+                        // do something when refresh starts
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                    circleRefreshLayout.finishRefreshing();
+                                    //getActivity().runOnUiThread(() -> {
+                                        Toasty.success(Objects.requireNonNull(getActivity()), "刷新了个寂寞", Toast.LENGTH_SHORT, true).show();
+                                    //});
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
+                    }
+
+                    @Override
+                    public void completeRefresh() {
+                        // do something when refresh complete
+                    }
+                });
+
+
+    }
+
+    private void initTabTime(View view) {
         Calendar calendar = Calendar.getInstance();
         //年
         int year = calendar.get(Calendar.YEAR);
         //月
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         //日
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         //获取系统时间
@@ -88,7 +124,7 @@ public class BlankFragment_todo extends Fragment {
     }
 
 
-    private void initRecyclerView(View view){
+    private void initRecyclerView(View view) {
         initDates();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new
@@ -101,10 +137,10 @@ public class BlankFragment_todo extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>5){
+                if (dy > 5) {
                     ((MainActivity) getActivity()).Hide();
                 }
-                if (dy<-5){
+                if (dy < -5) {
                     ((MainActivity) getActivity()).Display();
                 }
             }

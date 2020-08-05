@@ -60,7 +60,7 @@
             </com.balysv.materialripple.MaterialRippleLayout>
 
             <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/ripple_set_two"
+                android:id="@+id/check_updata"
                 app:mrl_rippleOverlay="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleColor="@color/pc_green_two"
@@ -83,7 +83,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="夜间"
+                        android:text="检查更新"
                         android:gravity="center"
                         android:textSize="16sp"
                         android:textColor="@color/pure_black"

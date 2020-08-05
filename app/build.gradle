@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
 
 android {
     compileSdkVersion 29
@@ -9,9 +10,12 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
-
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi' , 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     buildTypes {
@@ -48,4 +52,22 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+    implementation 'com.github.Jerey-Jobs:AnimationHelper:1.0'
+    //implementation 'com.tencent.bugly:crashreport:3.2.2'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.4.5'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    implementation 'com.tencent.bugly:nativecrashreport:3.7.1'
+}
+
+MobSDK {
+    appKey "2fb1ea9d91263"
+    appSecret "000bc2e082d0bf71e7585db5377b13e8"
+    ShareSDK {
+        loopShare false
+        devInfo {
+            QQ {
+                appId "101884115"
+                appKey "a581bcde040993a6ec48d6cccb8864c6"
+            }
+        }
+    }
 }

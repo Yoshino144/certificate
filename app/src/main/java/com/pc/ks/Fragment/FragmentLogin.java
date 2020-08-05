@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -30,16 +33,23 @@ import com.pc.ks.Activity.LoginActivity;
 import com.pc.ks.R;
 import com.pc.ks.Utils.CompatUtils;
 import com.pc.ks.Utils.LogUtils;
+import com.pc.ks.Utils.SpecialChar;
+import com.pc.ks.Utils.ToastUtils;
 import com.pc.ks.View.TickView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
 import es.dmoral.toasty.Toasty;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -51,7 +61,7 @@ import okhttp3.Response;
  * Use the {@link FragmentLogin#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentLogin extends Fragment {
+public class FragmentLogin extends Fragment implements PlatformActionListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -64,9 +74,9 @@ public class FragmentLogin extends Fragment {
     private TextView sign_up;
     private ImageView back_main;
     private LinearLayout pw_ph;
-    private ImageView pw_ph_img;
     private boolean pw_ph_flag = true;
     private ImageView card_ph_pw;
+    private ImageView pw_ph_img;
     private EditText password;
     private EditText username;
     private TextView send;
@@ -157,27 +167,20 @@ public class FragmentLogin extends Fragment {
         }
         return false;
     });
+    private LinearLayout qq;
 
     public FragmentLogin() {
     }
 
     public static FragmentLogin newInstance(String param1, String param2) {
-        FragmentLogin fragment = new FragmentLogin();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new FragmentLogin();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -206,6 +209,11 @@ public class FragmentLogin extends Fragment {
         password = getActivity().findViewById(R.id.password);
         username = getActivity().findViewById(R.id.username);
         send = getActivity().findViewById(R.id.send);
+        qq = getActivity().findViewById(R.id.qq);
+
+        qq.setOnClickListener(v -> {
+            QQ();
+        });
 
         pw_ph.setOnClickListener(v -> {
             if (pw_ph_flag) {
@@ -260,7 +268,7 @@ public class FragmentLogin extends Fragment {
                         Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
                             login_text.setVisibility(View.VISIBLE);
                         });
-                    } else if (isSpecialChar(username_str) || isSpecialChar(password_str)) {
+                    } else if (SpecialChar.isSpecialChar(username_str) || SpecialChar.isSpecialChar(password_str)) {
                         getActivity().runOnUiThread(() -> {
                             Toasty.warning(getActivity(), "账号密码不能包含特殊字符[ _`~!@#$%^&*()+=|{}':;',[].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|", Toast.LENGTH_SHORT, true).show();
                             showBottomLayout_back();
@@ -307,7 +315,7 @@ public class FragmentLogin extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();//新建一个OKHttp的对象
                     Request request = new Request.Builder()
-                            .url("http://192.168.2.206:8080/ks_server_war_exploded/toDo?cmd=0&username=" + username_str + "&password=" + password_str)
+                            .url("http://39.96.87.123:8080/ks_server/toDo?cmd=0&username=" + username_str + "&password=" + password_str)
                             .build();//创建一个Request对象
                     Response response = client.newCall(request).execute();//发送请求获取返回数据
                     String responseData = response.body().string();//处理返回的数据
@@ -324,11 +332,11 @@ public class FragmentLogin extends Fragment {
         JSONObject jsonObject = new JSONObject(str);
         int code = jsonObject.getInt("code");
         mHandler_fr_login.sendEmptyMessage(code);
-        if(code == 0){
+        if (code == 0) {
             SharedPreferences sp = getActivity().getSharedPreferences("user", 0);
             @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sp.edit();
             JSONObject jsonObject_res = new JSONObject(jsonObject.getString("result"));
-            editor.putBoolean("isLogin",true);
+            editor.putBoolean("isLogin", true);
             editor.putString("userid", jsonObject_res.getString("userid"));
             editor.putString("username", jsonObject_res.getString("username"));
             editor.putString("password", jsonObject_res.getString("password"));
@@ -336,12 +344,6 @@ public class FragmentLogin extends Fragment {
         }
     }
 
-    public static boolean isSpecialChar(String str) {
-        String regEx = "[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(str);
-        return m.find();
-    }
 
     private void showBottomLayout() {
         TypeEvaluator<ViewGroup.LayoutParams> evaluator = new HeightEvaluator();
@@ -369,6 +371,8 @@ public class FragmentLogin extends Fragment {
         set.start();
     }
 
+
+
     class HeightEvaluator implements TypeEvaluator<ViewGroup.LayoutParams> {
 
         @Override
@@ -377,5 +381,76 @@ public class FragmentLogin extends Fragment {
             params.width = (int) (startValue.width + fraction * (endValue.width - startValue.width));
             return params;
         }
+    }
+
+
+    private void QQ() {
+        Platform plat = ShareSDK.getPlatform(QQ.NAME);
+        ShareSDK.setEnableAuthTag(true);
+        plat.removeAccount(true);
+        //plat.SSOSetting(false);
+        plat.setPlatformActionListener(this);
+        if (plat.isClientValid()) {
+
+        }
+        if (plat.isAuthValid()) {
+        }
+        //plat.authorize();	//要功能，不要数据
+        plat.showUser(null);    //要数据不要功能，主要体现在不会重复出现授权界面
+    }
+
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        Log.d("=========", " _QQ: -->> onComplete: Platform:" + platform.toString());
+        Log.d("=========", " _QQ: -->> onComplete: hashMap:" + hashMap);
+        Log.d("=========", " _QQ: -->> onComplete: token:" + platform.getDb().getToken());
+        String userId = platform.getDb().getUserId();
+        Log.d("getUserId============",userId);
+
+        Log.d("Sign类登录后信息获取======", String.valueOf(hashMap));
+
+        JSONObject jsonObject = new JSONObject(hashMap);
+        String name = null,sex = null,year = null,imgUrl = null;
+        try {
+            name = jsonObject.getString("nickname");
+            sex = jsonObject.getString("gender");
+            year = jsonObject.getString("year")+"-01-01 00:00:00";
+            imgUrl = jsonObject.getString("figureurl_qq");
+            Log.d("-============",name+sex+year+imgUrl);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        checkQQUser(userId,name,sex,year,imgUrl);
+    }
+
+    private void checkQQUser(String qqId,String username_str, String sex,String year,String imgUrl) {
+        new Thread(() -> {
+            try {
+                OkHttpClient client = new OkHttpClient();//新建一个OKHttp的对象
+                Request request = new Request.Builder()
+                        .url("http://39.96.87.123:8080/ks_server/toDo?cmd=2&username=" + username_str + "&qqid=" + qqId + "&sex=" + sex + "&year=" + year + "&imgurl=" + imgUrl)
+                        .build();//创建一个Request对象
+                Response response = client.newCall(request).execute();//发送请求获取返回数据
+                String responseData = response.body().string();//处理返回的数据
+                LogUtils.d(responseData);
+                readJson(responseData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+
+        LogUtils.e( " SdkTagsMainActivity onError platform: " + platform +
+                " i: " + i + " throwable " + throwable.getMessage());
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+
+        LogUtils.e(" SdkTagsMainActivity onCancel platform: " + platform +
+                " i: " + i);
     }
 }
