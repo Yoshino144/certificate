@@ -5,10 +5,9 @@
     <color name="colorAccent">#03DAC5</color>
 
     <!--Main页-->
-    <color name="pure_white">#ffffff</color>
-    <color name="pure_black">#000000</color>
-
-    <color name="card_white_shense_to_hui">#ffffff</color>
+    <color name="pure_white">#303030</color>
+    <color name="pure_black">#DFffffff</color>
+    <color name="card_white_shense_to_hui">#424242</color>
 
     <!--PC-->
     <color name="first_purple">#919EFF</color>

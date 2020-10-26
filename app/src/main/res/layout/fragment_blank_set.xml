@@ -90,7 +90,7 @@
                 app:mrl_rippleOverlay="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleColor="@color/pc_green_two"
-                app:mrl_rippleBackground="#ffffff"
+                app:mrl_rippleBackground="@color/card_white_shense_to_hui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -124,7 +124,7 @@
                 app:mrl_rippleOverlay="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleColor="@color/pc_green_two"
-                app:mrl_rippleBackground="#ffffff"
+                app:mrl_rippleBackground="@color/card_white_shense_to_hui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

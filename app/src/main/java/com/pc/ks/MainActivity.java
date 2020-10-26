@@ -1,14 +1,11 @@
 package com.pc.ks;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,18 +15,17 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.jaeger.library.StatusBarUtil;
 import com.pc.ks.Adapter.MainTabFragmentPagerAdapter;
 import com.pc.ks.Fragment.BlankFragment_set;
 import com.pc.ks.Fragment.BlankFragment_time;
 import com.pc.ks.Fragment.BlankFragment_todo;
 import com.pc.ks.Utils.LogUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.dmoral.toasty.Toasty;
+import static android.content.res.Configuration.UI_MODE_NIGHT_MASK;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -46,6 +42,20 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        int color = getResources().getColor(R.color.pure_white);
+        StatusBarUtil.setColor(this, color, 0);
+        switch (isDarkTheme(this)) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                LogUtils.d("当前不是深色模式");
+                StatusBarUtil.setLightMode(this);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                LogUtils.d("当前是深色模式");
+                StatusBarUtil.setDarkMode(this);
+                break;
+        }
+
         initTabView();  //注册底部菜单
 
         Intent intent =getIntent();
@@ -142,5 +152,10 @@ public class MainActivity extends AppCompatActivity{
         LogUtils.d("显示了导航栏");
         bottomNavigationView.animate().translationY(0);
     }
+
+    private int isDarkTheme(Context context) {
+        return context.getResources().getConfiguration().uiMode & UI_MODE_NIGHT_MASK;
+    }
+
 
 }
