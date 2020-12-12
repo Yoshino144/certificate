@@ -81,9 +81,9 @@ public class BlankFragment_todo extends Fragment {
                                 try {
                                     Thread.sleep(1000);
                                     circleRefreshLayout.finishRefreshing();
-                                    //getActivity().runOnUiThread(() -> {
+                                    Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
                                         Toasty.success(Objects.requireNonNull(getActivity()), "刷新了个寂寞", Toast.LENGTH_SHORT, true).show();
-                                    //});
+                                    });
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }

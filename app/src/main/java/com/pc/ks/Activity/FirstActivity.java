@@ -26,7 +26,7 @@ public class FirstActivity extends AppCompatActivity {
             finish();
         });
         old_friend.setOnClickListener(v->{
-            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+            Intent intent = new Intent(FirstActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         });

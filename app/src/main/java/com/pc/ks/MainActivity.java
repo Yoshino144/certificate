@@ -3,9 +3,12 @@ package com.pc.ks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         int color = getResources().getColor(R.color.pure_white);
         StatusBarUtil.setColor(this, color, 0);
         switch (isDarkTheme(this)) {
@@ -62,6 +66,12 @@ public class MainActivity extends AppCompatActivity{
         page=intent.getIntExtra("page",0);
         setViewPager(page);
 
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        return resources.getDimensionPixelSize(resourceId);
     }
 
     public void setViewPager(int page){

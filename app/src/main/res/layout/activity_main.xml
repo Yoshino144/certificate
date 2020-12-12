@@ -8,18 +8,22 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/main_fragment_vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/bottom_color"
-        android:background="@color/pure_white"
-        app:menu="@menu/bottom_nav_menu" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/main_fragment_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            app:labelVisibilityMode="unlabeled"
+            app:itemIconTint="@drawable/bottom_color"
+            android:background="@color/pure_white"
+            app:menu="@menu/bottom_nav_menu" />
+
+
 </RelativeLayout>

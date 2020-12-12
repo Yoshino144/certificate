@@ -48,7 +48,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="我已有账号"
+        android:text="直接使用"
         android:textSize="18sp"
         android:gravity="center"
         android:textColor="@color/pc_green_two"

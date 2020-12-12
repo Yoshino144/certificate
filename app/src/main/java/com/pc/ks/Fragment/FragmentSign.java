@@ -45,7 +45,6 @@ import okhttp3.Response;
 public class FragmentSign extends Fragment {
     private ImageView back;
     private LinearLayout sign;
-    private TextView phone_pw;
     private TextView send_sign;
     private boolean pw_ph_flag = true;
     private ImageView card_ph_pw;
@@ -54,6 +53,7 @@ public class FragmentSign extends Fragment {
     private EditText password_two;
     private TextView sign_text;
     private SpinKitView spinKitView;
+    private EditText sign_email;
 
     public FragmentSign() {}
 
@@ -80,7 +80,6 @@ public class FragmentSign extends Fragment {
     private void initView(){
         back = getActivity().findViewById(R.id.back_login);
         sign = getActivity().findViewById(R.id.sign);
-        phone_pw = getActivity().findViewById(R.id.phone_pw);
         send_sign = getActivity().findViewById(R.id.send_sign);
         card_ph_pw = getActivity().findViewById(R.id.card_ph_pw_sign);
         password = getActivity().findViewById(R.id.password_sign);
@@ -88,6 +87,7 @@ public class FragmentSign extends Fragment {
         username = getActivity().findViewById(R.id.username_sign);
         sign_text = getActivity().findViewById(R.id.sign_text);
         spinKitView = getActivity().findViewById(R.id.spin_kit_sign);
+        sign_email = getActivity().findViewById(R.id.sign_email);
 
         back.setOnClickListener(v->{
             ((LoginActivity)getActivity()).setViewPager(1);
@@ -101,6 +101,7 @@ public class FragmentSign extends Fragment {
                     //验证
                     String username_str = username.getText().toString();
                     String password_str = password.getText().toString();
+                    String email = sign_email.getText().toString();
                     String password_str_two = password_two.getText().toString();
                     if ("".equals(username_str) || "".equals(password_str) || "".equals(password_str_two)) {
                         getActivity().runOnUiThread(() -> {
@@ -162,27 +163,29 @@ public class FragmentSign extends Fragment {
                 }
             }).start();
         });
-        phone_pw.setOnClickListener(v->{
-            send_sign.setVisibility(View.VISIBLE);
-            if (pw_ph_flag) {
-                pw_ph_flag = false;
-                card_ph_pw.setImageResource(R.mipmap.ph_hui);
-                password.setHint(new SpannableString("密码 选填"));
-                password_two.setHint(new SpannableString("验证码"));
-                username.setHint(new SpannableString("手机号"));
-                send_sign.setVisibility(View.VISIBLE);
-            } else {
-                pw_ph_flag = true;
-                card_ph_pw.setImageResource(R.mipmap.password);
-                password.setHint(new SpannableString("密码"));
-                password_two.setHint(new SpannableString("确认密码"));
-                username.setHint(new SpannableString("用户名"));
-                send_sign.setVisibility(View.GONE);
-            }
-        });
         send_sign.setOnClickListener(v->{
-
+            String email = sign_email.getText().toString();
+            sendYZM(email);
         });
+    }
+
+    private void sendYZM(String email) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();//新建一个OKHttp的对象
+                    Request request = new Request.Builder()
+                            .url("http://39.96.87.123:8080/ks_server/toDo?cmd=3&email=" + email)
+                            .build();//创建一个Request对象
+                    Response response = client.newCall(request).execute();//发送请求获取返回数据
+                    String responseData = response.body().string();//处理返回的数据
+                    LogUtils.d(responseData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void sendRequestWithOkHttp(String username_str, String password_str) {
@@ -197,7 +200,6 @@ public class FragmentSign extends Fragment {
                     Response response = client.newCall(request).execute();//发送请求获取返回数据
                     String responseData = response.body().string();//处理返回的数据
                     LogUtils.d(responseData);
-//                    readJson(responseData);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

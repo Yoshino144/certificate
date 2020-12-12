@@ -67,7 +67,7 @@
                     android:textSize="15sp"
                     android:id="@+id/username"
                     android:background="@null"
-                    android:hint="用户名/电话号"
+                    android:hint="用户名/邮箱"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>

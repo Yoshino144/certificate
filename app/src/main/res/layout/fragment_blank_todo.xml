@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#ffffff"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.BlankFragment_todo"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:background="@color/pure_white"
-        android:layout_height="66px"/>
+    android:orientation="vertical"
+    tools:context="com.pc.ks.MainActivity"
+    tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
+
+
     <RelativeLayout
         android:id="@+id/todo_tool"
         android:layout_width="match_parent"

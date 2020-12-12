@@ -10,10 +10,6 @@
     tools:context="com.pc.ks.MainActivity"
     tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:background="@color/pure_white"
-        android:layout_height="66px"/>
 
     <RelativeLayout
         android:id="@+id/rl_tool"
@@ -131,11 +127,26 @@
             app:year_view_month_text_size="20sp"
             app:year_view_scheme_color="@color/pc_green_two" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/pure_white" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="jnjniik"
+                    android:layout_height="match_parent"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/pure_white" />
+
+            </LinearLayout>
+        </ScrollView>
     </com.haibin.calendarview.CalendarLayout>
 
 </LinearLayout>

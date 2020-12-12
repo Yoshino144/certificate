@@ -3,7 +3,7 @@ apply plugin: 'com.mob.sdk'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "com.pc.ks"
@@ -25,6 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    ndkVersion '21.3.6528147'
 }
 
 dependencies {
@@ -33,7 +34,7 @@ dependencies {
     implementation 'com.github.vipulasri:timelineview:1.1.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     testImplementation 'junit:junit:4.13.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -41,7 +42,7 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.haibin:calendarview:3.6.9'
-    implementation 'com.google.android.material:material:1.3.0-alpha03'
+    implementation 'com.google.android.material:material:1.3.0-alpha04'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
